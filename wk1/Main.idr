@@ -111,4 +111,6 @@ sym r = ?dsjj
 -- associativity : (x + y) + z = x + (y + z)
 -- commutativity : x + y = y + x
 
--- next time: lists, vectors, equality type
+-- next time: lists, vectors, primitives, equality type
+
+-- next next time: general inductive ADTs, generic printf
