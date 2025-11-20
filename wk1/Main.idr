@@ -91,12 +91,22 @@ rightNeutral (S' x) = -- show P (k + 1)
 
 -- if you have this, then you can show all of the below,
 -- WITHOUT pattern matching on Refl
-replace : (p : a -> Type) -> p x -> x = y -> p y
-replace p inp Refl = inp
+replace' : (0 p : a -> Type) -> p x -> x = y -> p y
+replace' p inp Refl = inp
+
+-- a -> Type   ---  a type with a free variable (and the free variable is of type a)
 
 -- Additional exercise
 
--- cong : (f : a -> b) -> x = y -> f x = f y
+cong' : (0 f : a -> b) -> x = y -> f x = f y
+cong' f p = replace' (\k => f x = f k) Refl p
+
+sym' : x = y -> y = x
+sym' p = replace' (\k => k = x) Refl p
+
+trans' : x = y -> y = z -> x = z
+trans' p q = replace' (\k => x = k) p q
+
 -- cong f p = ?dsj
 
 
@@ -110,6 +120,7 @@ replace p inp Refl = inp
 
 -- next next time: general inductive ADTs, generic printf
 
+-- Addrightsucc
 aux : (x, y : _) -> add' x (S' y) = S' (add' x y)
 aux Z' b = Refl
 aux (S' x) b = cong S' (aux x b)
@@ -117,5 +128,7 @@ aux (S' x) b = cong S' (aux x b)
 commutativity : (x, y : _) -> add' x y = add' y x
 commutativity Z' Z' = Refl
 commutativity Z' (S' x) = cong S' (commutativity Z' x)
-commutativity (S' x) Z' = cong S' (commutativity x Z')
-commutativity (S' x) (S' y) = cong S' (trans (aux x y) (trans (cong S' (commutativity x y)) (sym (aux y x))))
+commutativity (S' x) Z' = cong S' (commutativity x Z') 
+commutativity (S' x) (S' y) = cong S' (trans (aux x y) (trans (cong S' (commutativity x y)) (sym (aux y x))) )
+
+  -- cong S' (trans (aux x y) (trans (cong S' (commutativity x y)) (sym (aux y x))))
