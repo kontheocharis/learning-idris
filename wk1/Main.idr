@@ -96,14 +96,9 @@ replace p inp Refl = inp
 
 -- Additional exercise
 
-cong : (f : a -> b) -> x = y -> f x = f y
-cong f p = ?dsj
+-- cong : (f : a -> b) -> x = y -> f x = f y
+-- cong f p = ?dsj
 
-trans : a = b -> b = c -> a = c
-trans p q = ?dskj
-
-sym : a = b -> b = a
-sym r = ?dsjj
 
 
 -- Exercises:
@@ -114,3 +109,13 @@ sym r = ?dsjj
 -- next time: lists, vectors, primitives, equality type
 
 -- next next time: general inductive ADTs, generic printf
+
+aux : (x, y : _) -> add' x (S' y) = S' (add' x y)
+aux Z' b = Refl
+aux (S' x) b = cong S' (aux x b)
+
+commutativity : (x, y : _) -> add' x y = add' y x
+commutativity Z' Z' = Refl
+commutativity Z' (S' x) = cong S' (commutativity Z' x)
+commutativity (S' x) Z' = cong S' (commutativity x Z')
+commutativity (S' x) (S' y) = cong S' (trans (aux x y) (trans (cong S' (commutativity x y)) (sym (aux y x))))
